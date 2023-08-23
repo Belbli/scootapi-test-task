@@ -1,8 +1,6 @@
 package com.github.belbli.geospatial.handler;
 
-import com.github.belbli.geospatial.exception.MissingAuthHeaderException;
 import com.github.belbli.geospatial.exception.ValidationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,17 +24,5 @@ public class ApplicationExceptionHandler {
         body.put("path", ((ServletWebRequest) request).getRequest().getServletPath());
 
         return ResponseEntity.badRequest().body(body);
-    }
-
-    @ExceptionHandler({MissingAuthHeaderException.class})
-    public ResponseEntity<Object> handle(MissingAuthHeaderException ex, WebRequest request) {
-        Map<String, Object> body = new LinkedHashMap<>();
-
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", ex.getMessage());
-        body.put("error", ex.getClass().getName());
-        body.put("path", ((ServletWebRequest) request).getRequest().getServletPath());
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
     }
 }
